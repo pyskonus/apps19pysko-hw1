@@ -32,12 +32,13 @@ public class TemperatureSeriesAnalysis {
 
     public double deviation() throws IllegalArgumentException {
         if (this.temperatureSeries.length == 0) throw new IllegalArgumentException();
+        if (this.temperatureSeries.length == 1) return 0;
         double sum_of_sq = 0;
         double avg = this.average();
         for (double value: this.temperatureSeries) {
             sum_of_sq += Math.pow(value - avg, 2);
         }
-        return sum_of_sq/this.temperatureSeries.length;
+        return Math.sqrt(sum_of_sq/(this.temperatureSeries.length - 1));
     }
 
     public double min() throws IllegalArgumentException {
@@ -53,7 +54,7 @@ public class TemperatureSeriesAnalysis {
         if (this.temperatureSeries.length == 0) throw new IllegalArgumentException();
         double maximum = this.temperatureSeries[0];
         for (double value: this.temperatureSeries) {
-            if (value < maximum) maximum = value;
+            if (value > maximum) maximum = value;
         }
         return maximum;
     }
@@ -71,7 +72,7 @@ public class TemperatureSeriesAnalysis {
             double temp = Math.abs(value - tempValue);
             if (temp < smallest || (temp == smallest && temp > result)) {
                 smallest = temp;
-                result = temp;
+                result = value;
             }
         }
         return result;
